@@ -2,19 +2,19 @@ package boggle;
 
 
 import javafx.geometry.Pos;
-import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.TextAlignment;
 
 
- /**                                           The GameInfoVis Class
-  *
-  *  The GameInfoVis class displays the current score and the exact time remaining. It also contains a text box that
-  *  initially displays instructions, then displays warning messages at two minutes and one minute left.
-  **/
+/**
+ * The GameInfoVis Class
+ * <p>
+ * The GameInfoVis class displays the current score and the exact time remaining. It also contains a text box that
+ * initially displays instructions, then displays warning messages at two minutes and one minute left.
+ **/
 
-public class GameInfoVis
-{
+class GameInfoVis {
     private static HBox _pane;
     private static Label _timer;
     private static Label _score;
@@ -28,8 +28,7 @@ public class GameInfoVis
     * Output: nothing.
     **/
 
-    public GameInfoVis(HBox pane)
-    {
+    GameInfoVis(HBox pane) {
         _pane = pane;
         _pane.setAlignment(Pos.CENTER);
         _pane.setSpacing(35);
@@ -44,8 +43,7 @@ public class GameInfoVis
     * Output: nothing.
     **/
 
-    private void createLabels()
-    {
+    private void createLabels() {
         _timer = new Label("Time Remaining: 3:00");
         _timer.setMinSize(160, 40);
         _timer.setStyle(Constants.BUTTONS_CSS);
@@ -74,18 +72,14 @@ public class GameInfoVis
     * Output: nothing.
     **/
 
-    public void setInfoText(String str, String size)
-    {
-        if((str != null) && (size != null))
-        {
-            String css =  Constants.GAME_INFO_CSS + size;
+    void setInfoText(String str, String size) {
+        if ((str != null) && (size != null)) {
+            String css = Constants.GAME_INFO_CSS + size;
 
             _info.setStyle(css);
             _info.setText(str);
 
-        }
-        else
-        {
+        } else {
             _info.setStyle("");
             _info.setText("");
         }
@@ -99,12 +93,11 @@ public class GameInfoVis
     * Output: nothing.
     **/
 
-    public void displayInstructions()
-    {
+    void displayInstructions() {
         String instructions = "Welcome to Boggle!\n"
-                            + "Begin play by dragging a mouse click over adjacent letters to form words, then press enter. "
-                            + "To delete the last added letter, press delete."
-                            + "To deselect all letters on the board, press clear.";
+                + "Begin play by dragging a mouse click over adjacent letters to form words, then press enter. "
+                + "To delete the last added letter, press delete."
+                + "To deselect all letters on the board, press clear.";
 
         this.setInfoText(instructions, "-fx-font: 13px Helvetica;\n");
     }
@@ -116,8 +109,7 @@ public class GameInfoVis
     * Output: nothing.
     **/
 
-    public void updateTimerLabel(String str)
-    {
+    void updateTimerLabel(String str) {
         _timer.setText(str);
     }
 
@@ -128,11 +120,8 @@ public class GameInfoVis
     * Output: nothing.
     **/
 
-    public void updateScoreLabel(int score)
-    {
-        StringBuilder str = new StringBuilder("Score:  ");
-        str.append(score);
-        _score.setText(str.toString());
+    void updateScoreLabel(int score) {
+        _score.setText("Score:  " + score);
 
     }
 
@@ -143,8 +132,7 @@ public class GameInfoVis
     * Output: nothing.
     **/
 
-    public void gameOver()
-    {
-        this.setInfoText("    Game Over!    ","-fx-font: 40px Helvetica;\n");
+    void gameOver() {
+        this.setInfoText("    Game Over!    ", "-fx-font: 40px Helvetica;\n");
     }
 }

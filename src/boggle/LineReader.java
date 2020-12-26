@@ -3,16 +3,16 @@ package boggle;
 
 import java.io.*;
 
-/**                                                 LineReader Class
- *
- *      The LineReader class is instantiated locally by the Game class to read the contents of the file
- *      "OpenEnglishWordList.txt". Because each word is separated by a new line, this class simply reads
- *      one line and adds the line to the dictionary. The LineReader is passed a reference to the DictTrie
- *      it should add words to.
+/**
+ * LineReader Class
+ * <p>
+ * The LineReader class is instantiated locally by the Game class to read the contents of the file
+ * "OpenEnglishWordList.txt". Because each word is separated by a new line, this class simply reads
+ * one line and adds the line to the dictionary. The LineReader is passed a reference to the DictTrie
+ * it should add words to.
  **/
 
-public class LineReader
-{
+class LineReader {
     private static DictTrie _dict;
 
     /*
@@ -23,8 +23,7 @@ public class LineReader
     *   Output: nothing.
     * */
 
-    public LineReader(DictTrie dictionary)
-    {
+    LineReader(DictTrie dictionary) {
         _dict = dictionary;
     }
 
@@ -35,19 +34,14 @@ public class LineReader
     *   Output: nothing.
     * */
 
-    public void addToDict(String filename) throws IOException
-    {
-        InputStream input = FileReader.class.getResourceAsStream(filename);
-        BufferedReader reader = new BufferedReader(new InputStreamReader(input, "UTF-8"));
-        try
-        {
+    void addToDict() throws IOException {
+        InputStream input = FileReader.class.getResourceAsStream("/OpenEnglishWordList.txt");
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(input, "UTF-8"))) {
             String line = reader.readLine();
             while (line != null) {
                 _dict.add(line);
                 line = reader.readLine();
             }
-        } finally {
-            reader.close();
         }
     }
 }

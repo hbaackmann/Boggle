@@ -2,20 +2,22 @@ package boggle;
 
 import javafx.scene.layout.GridPane;
 
-/**                                                 GameBoard Class
- *
- *  The GameBoard class represents the logical abstraction of the the GameBoard. It is responsible for rolling the 'die'--
- *  which are represented by the class Dice. After a die is rolled, if it lands on a letter that has appeared more than 4 times
- *  on the board, it will be rolled until it lands on a valid letter. The GameBoard class also sets each vertex's
- *  references to it's neighbors. Once the GameBoard has created all the vertices and set their neighbors, it creates
- *  the GameBoard visualizer which maintains the same letters for the duration of the game.
+import java.util.HashMap;
+
+/**
+ * GameBoard Class
+ * <p>
+ * The GameBoard class represents the logical abstraction of the the GameBoard. It is responsible for rolling the 'die'--
+ * which are represented by the class Dice. After a die is rolled, if it lands on a letter that has appeared more than 4 times
+ * on the board, it will be rolled until it lands on a valid letter. The GameBoard class also sets each vertex's
+ * references to it's neighbors. Once the GameBoard has created all the vertices and set their neighbors, it creates
+ * the GameBoard visualizer which maintains the same letters for the duration of the game.
  **/
 
-public class GameBoard
-{
-    private Vertex[][] _vertices;
-    private int _dim;
-    private GameBoardVis _vis;
+class GameBoard {
+    private final Vertex[][] _vertices;
+    private final int _dim;
+    private final GameBoardVis _vis;
     private static Dice _dice;
 
     /*
@@ -27,8 +29,7 @@ public class GameBoard
     *  Output: nothing.
     **/
 
-    public GameBoard(int dimension, GridPane pane)
-    {
+    GameBoard(int dimension, GridPane pane) {
         _dim = dimension;
         _vertices = new Vertex[_dim][_dim];
         _dice = new Dice(dimension);
@@ -49,8 +50,7 @@ public class GameBoard
     *  Output: nothing.
     **/
 
-    public void gameOver()
-    {
+    void gameOver() {
         _vis.gameOver();
     }
 
@@ -61,8 +61,7 @@ public class GameBoard
     *  Output: a 2D array of vertices representing the GameBoard.
     **/
 
-    public Vertex[][] getVertices()
-    {
+    Vertex[][] getVertices() {
         return _vertices;
     }
 
@@ -73,47 +72,20 @@ public class GameBoard
     *  Output: the visualizer for the GameBoard
     **/
 
-    public GameBoardVis getGBVisualizer()
-    {
+    GameBoardVis getGBVisualizer() {
         return _vis;
     }
 
-    /*
-    *       The createFrequencyArray() method is called by the GameBoard before creating the vertices to create an
-    *  array that holds the frequency that each letter appears on the GameBoard. This is later used to ensure no
-    *  letter appears more than four times.
-    *
-    *  Input:  nothing.
-    *  Output: letterFrequencies - the an array, with each index corresponding to a lowercase letter's position
-    *          in the alphabet. When a letter is used, the int value held at the letter's position in the array will be
-    *          increased by one.
-    **/
-
-    private int[] createFrequencyArray()
-    {
-        int[] letterFrequencies = new int[26];
-        for (int i = 0; i < 26; i++)
-        {
-            letterFrequencies[i] = 0;
-        }
-        return letterFrequencies;
-    }
 
     /*
-    *       The createFrequencyArray() method is called by the GameBoard before creating the vertices to create an
-    *  array that holds the frequency that each letter appears on the GameBoard. This is later used to ensure no
-    *  letter appears more than four times.
+    *       If letter is q, make sure that there is at least on u in the vertex's neighbors.
     *
     *  Input:  Vertex
-    *  Output: letterFrequencies - the an array, with each index corresponding to a lowercase letter's position
-    *          in the alphabet. When a letter is used, the int value held at the letter's position in the array will be
-    *          increased by one.
+    *  Output: Nothing
     **/
 
-    private void checkForQ(Vertex v)
-    {
-        if (v.getChar() == 'q')
-        {
+    private void checkForQ(Vertex v) {
+        if (v.getChar() == 'q') {
             Vertex neighbor = v.getNeighbors().iterator().next();
             neighbor.setChar('u');
         }
@@ -130,18 +102,15 @@ public class GameBoard
     *  Output: nothing.
     **/
 
-    private void addLetter(Vertex vertex, int[] letterFrequencies)
-    {
+    private void addLetter(Vertex vertex, HashMap<Character, Integer> freq) {
         char c;
-        if (_dice.hasNextDie() == true)
-        {
+        if (_dice.hasNextDie()) {
             _dice.setNextDie();
             c = _dice.rollCurDie();
-            while (letterFrequencies[Constants.LC_ALPHABET.indexOf(c)] == 4)
-            {
+            while (freq.getOrDefault(c, 0) == 4) {
                 c = _dice.rollCurDie();
             }
-            letterFrequencies[Constants.LC_ALPHABET.indexOf(c)]++;
+            freq.put(c, freq.getOrDefault(c, 0) + 1);
             vertex.setChar(c);
         }
     }
@@ -154,23 +123,18 @@ public class GameBoard
     *  Input: nothing.
     *  Output: nothing.
     **/
-    private void createVertices()
-    {
-        int[] freq = this.createFrequencyArray();
+    private void createVertices() {
+        HashMap<Character, Integer> freq = new HashMap<>();
 
-        for (int col = 0; col < _dim; col++)
-        {
-            for (int row = 0; row < _dim; row++)
-            {
+        for (int col = 0; col < _dim; col++) {
+            for (int row = 0; row < _dim; row++) {
                 _vertices[row][col] = new Vertex(row, col);
                 this.addLetter(_vertices[row][col], freq);
             }
         }
 
-        for (int col = 0; col < _dim; col++)
-        {
-            for (int row = 0; row < _dim; row++)
-            {
+        for (int col = 0; col < _dim; col++) {
+            for (int row = 0; row < _dim; row++) {
                 this.setNeighbors(_vertices[row][col], row, col);
                 this.checkForQ(_vertices[row][col]);
             }
@@ -186,43 +150,34 @@ public class GameBoard
     *  Output: nothing.
     **/
 
-    private void setNeighbors(Vertex v, int row, int col)
-    {
+    private void setNeighbors(Vertex v, int row, int col) {
         int up = (row - 1);
         int down = (row + 1);
         int left = (col - 1);
         int right = (col + 1);
 
-        if (up >= 0)
-        {
+        if (up >= 0) {
             v.setNeighbor(_vertices[up][col]);
         }
-        if (down < _dim)
-        {
+        if (down < _dim) {
             v.setNeighbor(_vertices[down][col]);
         }
-        if (left >= 0)
-        {
+        if (left >= 0) {
             v.setNeighbor(_vertices[row][left]);
 
-            if (down < _dim)
-            {
+            if (down < _dim) {
                 v.setNeighbor(_vertices[down][left]);
             }
-            if (up >= 0)
-            {
+            if (up >= 0) {
                 v.setNeighbor(_vertices[up][left]);
             }
         }
-        if (right < _dim)
-        {
+        if (right < _dim) {
             v.setNeighbor(_vertices[row][right]);
-            if (down < _dim)
-            {
+            if (down < _dim) {
                 v.setNeighbor(_vertices[down][right]);
             }
-            if (up >= 0)
-            {
+            if (up >= 0) {
                 v.setNeighbor(_vertices[up][right]);
             }
         }

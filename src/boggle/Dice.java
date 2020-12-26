@@ -1,21 +1,20 @@
 package boggle;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
 
-/**                                                 Dice Class
- *
- *   The Dice class is used to generate a simulation of the degree of randomness used in the actual boggle game.
- *   The randomness of the actual boggle game is constrained by either 16 or 25 dice falling in random locations
- *   on the GameBoard, plus randomly landing on one of their six sides. However, the creators of Boggle carefully
- *   chose the letter distribution of all the letters on the dice of the boggle board so I used that letter
- *   distribution (see Resources) to increase the likelihood of words being formed and simulate the actual game.
+/**
+ * Dice Class
+ * <p>
+ * The Dice class is used to generate a simulation of the degree of randomness used in the actual boggle game.
+ * The randomness of the actual boggle game is constrained by either 16 or 25 dice falling in random locations
+ * on the GameBoard, plus randomly landing on one of their six sides. However, the creators of Boggle carefully
+ * chose the letter distribution of all the letters on the dice of the boggle board so I used that letter
+ * distribution (see Resources) to increase the likelihood of words being formed and simulate the actual game.
  **/
 
-public class Dice {
+class Dice {
 
-    private ArrayList<Die> _dice;
+    private final ArrayList<Die> _dice;
     private Die _curDie;
 
     /*
@@ -25,15 +24,11 @@ public class Dice {
     *   Output:  nothing.
     **/
 
-    public Dice(int dimension)
-    {
+    Dice(int dimension) {
         // Generate correct number of dice based on the size of the board
-        if(dimension == 4)
-        {
+        if (dimension == 4) {
             _dice = this.createBogDice();
-        }
-        else
-        {
+        } else {
             _dice = this.createBigBogDice();
         }
     }
@@ -45,8 +40,7 @@ public class Dice {
     *   Output:  boolean determining indicating whether or not there are any dice left.
     **/
 
-    public Boolean hasNextDie()
-    {
+    Boolean hasNextDie() {
         return _dice.size() >= 1;
     }
 
@@ -58,8 +52,7 @@ public class Dice {
     *   Output:  nothing.
     **/
 
-    public void setNextDie()
-    {
+    void setNextDie() {
         int index = (int) (Math.random() * _dice.size());
         _curDie = _dice.remove(index);
     }
@@ -72,8 +65,7 @@ public class Dice {
     *   Output:  a character representing the letter facing up after the die was rolled.
     **/
 
-    public char rollCurDie()
-    {
+    char rollCurDie() {
         return _curDie.roll();
     }
 
@@ -81,9 +73,8 @@ public class Dice {
     *
     *  Each group of six letters represents the letters that will appear on a single die.
     * */
-    private ArrayList<Die> createBogDice()
-    {
-        ArrayList<Die> dice = new ArrayList<Die>();
+    private ArrayList<Die> createBogDice() {
+        ArrayList<Die> dice = new ArrayList<>();
         dice.add(new Die("aaeegn"));
         dice.add(new Die("abbjoo"));
         dice.add(new Die("achops"));
@@ -104,7 +95,7 @@ public class Dice {
     }
 
     private ArrayList<Die> createBigBogDice() {
-        ArrayList<Die> dice = new ArrayList<Die>();
+        ArrayList<Die> dice = new ArrayList<>();
         dice.add(new Die("aaafrs"));
         dice.add(new Die("aaeeee"));
         dice.add(new Die("aafirs"));
@@ -133,27 +124,24 @@ public class Dice {
         return dice;
     }
 
-    /**                                                 Die Class
-     *
-     *   The Die class is a private inner class used to logically represent a single die. Each die receives a string
-     *   upon instantiation representing the letters on its six sides which it saves in its _letters variable. When
-     *   the die is rolled, it randomly indexes into _letters and returns a char.
+    /**
+     * Die Class
+     * <p>
+     * The Die class is a private inner class used to logically represent a single die. Each die receives a string
+     * upon instantiation representing the letters on its six sides which it saves in its _letters variable. When
+     * the die is rolled, it randomly indexes into _letters and returns a char.
      **/
 
-    private class Die
-    {
-        private char[] _letters;
+    private class Die {
+        private final char[] _letters;
 
-        public Die(String letters)
-        {
+        Die(String letters) {
             _letters = letters.toCharArray();
         }
 
-        public char roll()
-        {
+        char roll() {
             int index = (int) (Math.random() * 6);
-            char c = _letters[index];
-            return c;
+            return _letters[index];
         }
     }
 

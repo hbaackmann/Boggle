@@ -1,29 +1,31 @@
 package boggle;
 
-import javafx.geometry.HPos;
-import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Control;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.StrokeType;
+import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 
-/**                                                      PaneOrganizer
- *
- *  The PaneOrganizer is instantiated by the Game class before any of the Game's components are instantiated (such as
- *  the GameBoard, Wordlist, Timer, etc). It is responsible for organizing all of the graphical elements of the application
- *  using a border pane as the root of the scene to organize the top, right, left, and bottom of the GUI. It adds child Panes
- *  to each of the aforementioned sections, the stores references to those Panes so that the Game can pass on the references
- *  with getter methods. Additionally, the PaneOrganizer manages the menu that appears across the top of display, containing a
- *  Quit button, a Boggle button (4x4), and a BigBoggle button (5x5).
- *
+/**
+ * PaneOrganizer
+ * <p>
+ * The PaneOrganizer is instantiated by the Game class before any of the Game's components are instantiated (such as
+ * the GameBoard, Wordlist, Timer, etc). It is responsible for organizing all of the graphical elements of the application
+ * using a border pane as the root of the scene to organize the top, right, left, and bottom of the GUI. It adds child Panes
+ * to each of the aforementioned sections, the stores references to those Panes so that the Game can pass on the references
+ * with getter methods. Additionally, the PaneOrganizer manages the menu that appears across the top of display, containing a
+ * Quit button, a Boggle button (4x4), and a BigBoggle button (5x5).
  **/
 
-public class PaneOrganizer
-    {
+class PaneOrganizer {
 
     private static javafx.scene.layout.BorderPane _root;
     private static javafx.scene.layout.GridPane _boardPane;
@@ -41,7 +43,7 @@ public class PaneOrganizer
     *   Output:  nothing.
     **/
 
-    public PaneOrganizer(Game game, int dim) {
+    PaneOrganizer(Game game) {
         _game = game;
 
         _root = new BorderPane();
@@ -64,8 +66,7 @@ public class PaneOrganizer
     *   Output:  nothing.
     **/
 
-    public void createNewGame(int dim)
-    {
+    private void createNewGame(int dim) {
         _game.createNewGame(dim);
     }
 
@@ -76,21 +77,19 @@ public class PaneOrganizer
     *   Output:  a child pane of BorderPane.
     **/
 
-    public GridPane getGamePane()
-    {
+    GridPane getGamePane() {
         return _boardPane;
     }
-    public GridPane getWordPane()
-    {
+
+    GridPane getWordPane() {
         return _wordPane;
     }
 
-    public HBox getBottomPane()
-    {
+    HBox getBottomPane() {
         return _bottomPane;
     }
 
-    public Pane getRoot() {
+    Pane getRoot() {
         return _root;
 
     }
@@ -117,9 +116,13 @@ public class PaneOrganizer
         topPane.getColumnConstraints().add(new ColumnConstraints(110));
 
 
-        Label title = new Label("Boggle!");
-        title.setFont(Font.font("Comic Sans MS", FontWeight.BLACK, 30));
-        title.setTextFill(Color.DARKORANGE);
+        Text title = new Text("Boggle!");
+        Font font = Font.font("Comic Sans MS", FontWeight.BLACK, 34);
+        title.setFont(font);
+        title.setFill(Color.DARKORANGE);
+        title.setStroke(Color.WHITE);
+        title.setStrokeType(StrokeType.OUTSIDE);
+        title.setStrokeWidth(1.5);
         topPane.add(title, 0, 0);
         GridPane.setHalignment(title, HPos.CENTER);
 
@@ -171,8 +174,7 @@ public class PaneOrganizer
     *   Output:  nothing.
     **/
 
-    private void createWordListPane()
-    {
+    private void createWordListPane() {
         _wordPane = new GridPane();
         _wordPane.setAlignment(Pos.CENTER_LEFT);
         _wordPane.setPrefSize(Constants.WORD_LIST_WIDTH, Constants.WORD_LIST_HEIGHT);
@@ -190,8 +192,7 @@ public class PaneOrganizer
     *   Output:  nothing.
     **/
 
-    private void createBottomPane()
-    {
+    private void createBottomPane() {
         _bottomPane = new HBox();
         _bottomPane.setPrefSize(Constants.BOTTOM_PANE_WIDTH, Constants.BOTTOM_PANE_HEIGHT);
         _bottomPane.setAlignment(Pos.CENTER);
@@ -201,38 +202,35 @@ public class PaneOrganizer
     }
 
 
-   /**                         QuitHandler Class
-    *
-    *     The QuitHandler class quits the app with exit status code 0.
-    **/
-    private class QuitHandler implements EventHandler<ActionEvent>
-    {
-        public void handle(ActionEvent event)
-        {
-                System.exit(0);
+    /**
+     * QuitHandler Class
+     * <p>
+     * The QuitHandler class quits the app with exit status code 0.
+     **/
+    private class QuitHandler implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent event) {
+            System.exit(0);
         }
     }
 
-    /**                         SmallBoggle Class
-     *
-     *     The SmallBoggle class creates a new 4x4 boggle game.
+    /**
+     * SmallBoggle Class
+     * <p>
+     * The SmallBoggle class creates a new 4x4 boggle game.
      **/
-    private class SmallBoggle implements EventHandler<ActionEvent>
-    {
-        public void handle(ActionEvent e)
-        {
+    private class SmallBoggle implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent e) {
             PaneOrganizer.this.createNewGame(4);
         }
     }
 
-    /**                         BigBoggle Class
-     *
-     *     The SmallBoggle class creates a new 5x5 boggle game.
+    /**
+     * BigBoggle Class
+     * <p>
+     * The SmallBoggle class creates a new 5x5 boggle game.
      **/
-    private class BigBoggle implements EventHandler<ActionEvent>
-    {
-        public void handle(ActionEvent e)
-        {
+    private class BigBoggle implements EventHandler<ActionEvent> {
+        public void handle(ActionEvent e) {
             PaneOrganizer.this.createNewGame(5);
         }
     }

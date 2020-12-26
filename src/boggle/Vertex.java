@@ -1,21 +1,19 @@
 package boggle;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
-public class Vertex
-{
-    private ArrayList<Vertex> _neighbors;
-    private int _row;
-    private int _col;
+class Vertex {
+    private final ArrayList<Vertex> _neighbors;
+    private final int _row;
+    private final int _col;
     private char _c;
     private Boolean _isVisted;
 
 
-    public Vertex(int row, int col){
+    Vertex(int row, int col) {
         _row = row;
         _col = col;
-        _neighbors = new ArrayList<Vertex>();
+        _neighbors = new ArrayList<>();
         _isVisted = false;
     }
 
@@ -23,13 +21,11 @@ public class Vertex
     *
     * */
 
-    public void setChar(char c)
-    {
+    void setChar(char c) {
         _c = c;
     }
 
-    public char getChar()
-    {
+    char getChar() {
         return _c;
     }
 
@@ -39,8 +35,7 @@ public class Vertex
     * Output: None.
     * */
 
-    public void setNeighbor(Vertex vertex)
-    {
+    void setNeighbor(Vertex vertex) {
         _neighbors.add(vertex);
     }
 
@@ -52,8 +47,8 @@ public class Vertex
     * */
 
 
-    public ArrayList<Vertex> getNeighbors()
-    { return _neighbors;
+    ArrayList<Vertex> getNeighbors() {
+        return _neighbors;
     }
 
 
@@ -63,24 +58,24 @@ public class Vertex
     * Output: An int representing the respective coordinate.
     * */
 
-    public int getRow()
-    { return _row;
+    int getRow() {
+        return _row;
     }
 
-    public int getCol()
-    { return _col;
+    int getCol() {
+        return _col;
     }
 
      /*                           Getter and Setter Methods for _isVisited variable
     *
     * */
 
-    public void setVisited(Boolean bool)
-    {  _isVisted = bool;
+    void setVisited(Boolean bool) {
+        _isVisted = bool;
     }
 
-    public Boolean getVisited()
-    { return _isVisted;
+    Boolean getVisited() {
+        return _isVisted;
     }
 
 }

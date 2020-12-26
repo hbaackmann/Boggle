@@ -9,32 +9,33 @@ import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.StrokeLineJoin;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
 
-/**                                                GameBoardVis Class
- *
- *  An instance of the GameBoardVis class is instantiated by the GameBoard class to display the letters on the
- *  GameBoard. Because the GameBoard is interactive, the GameBoardVis class contains a private inner class called
- *  BoggleSquare that represents a smart object that knows the letter it represents, it's neighbors, and if it was
- *  selected. If it was selected, a BoggleSquare will highlight itself add itself to the _lastselected and
- *  _selected variables. The _selected variable ensures a square is only selected once during the creation of a
- *  string, and can therefore only be appended to the current _word once. The _lastselected variable allows the
- *  GameBoardVis to achieve the 'Delete' button's functionality. It allows the user to un-select the BoggleSquare
- *  that was most recently selected, and delete it from the current word until no selected letters remain in the
- *  Stack. The GameBoardVis Class communicates with the WordListVis class (there is a two way reference), so that
- *  the WordListVis' listeners for the Delete, Clear, and Submit buttons can call the the GameBoardVis and the
- *  GameBoardVis can call the WordListVis to update the word label indicating which letters were selected
- *  (in order).
+/**
+ * GameBoardVis Class
+ * <p>
+ * An instance of the GameBoardVis class is instantiated by the GameBoard class to display the letters on the
+ * GameBoard. Because the GameBoard is interactive, the GameBoardVis class contains a private inner class called
+ * BoggleSquare that represents a smart object that knows the letter it represents, it's neighbors, and if it was
+ * selected. If it was selected, a BoggleSquare will highlight itself add itself to the _lastselected and
+ * _selected variables. The _selected variable ensures a square is only selected once during the creation of a
+ * string, and can therefore only be appended to the current _word once. The _lastselected variable allows the
+ * GameBoardVis to achieve the 'Delete' button's functionality. It allows the user to un-select the BoggleSquare
+ * that was most recently selected, and delete it from the current word until no selected letters remain in the
+ * Stack. The GameBoardVis Class communicates with the WordListVis class (there is a two way reference), so that
+ * the WordListVis' listeners for the Delete, Clear, and Submit buttons can call the the GameBoardVis and the
+ * GameBoardVis can call the WordListVis to update the word label indicating which letters were selected
+ * (in order).
  **/
 
-public class GameBoardVis
-{
-    private GridPane _pane;
-    private BoggleSquare[][] _squares;
-    private int _dim;
+class GameBoardVis {
+    private final GridPane _pane;
+    private final BoggleSquare[][] _squares;
+    private final int _dim;
     private StringBuilder _word;
     private Boolean _letterlock;
     private Stack<BoggleSquare> _lastselected;
@@ -51,16 +52,15 @@ public class GameBoardVis
     *   Output:  nothing.
     */
 
-    public GameBoardVis(GridPane pane, int dimension)
-    {
+    GameBoardVis(GridPane pane, int dimension) {
         _pane = pane;
         _dim = dimension;
         _squares = new BoggleSquare[_dim][_dim];
         _word = new StringBuilder();
 
         _letterlock = false;
-        _lastselected = new Stack<BoggleSquare>();
-        _selected = new ArrayList<BoggleSquare>();
+        _lastselected = new Stack<>();
+        _selected = new ArrayList<>();
 
         this.createGrid();
     }
@@ -73,12 +73,9 @@ public class GameBoardVis
     *   Output:  nothing.
     */
 
-    public void displayLetters(Vertex[][] vertices)
-    {
-        for (int row = 0; row < _dim; row++)
-        {
-            for (int col = 0; col < _dim; col++)
-            {
+    void displayLetters(Vertex[][] vertices) {
+        for (int row = 0; row < _dim; row++) {
+            for (int col = 0; col < _dim; col++) {
                 _squares[row][col] = new BoggleSquare(vertices[row][col]);
                 _pane.add(_squares[row][col].getPane(), col, row);
             }
@@ -95,16 +92,13 @@ public class GameBoardVis
     *   Output:  nothing.
     */
 
-    public void clearAllSelectedLetters()
-    {
+    void clearAllSelectedLetters() {
         _word = new StringBuilder();
-        _lastselected = new Stack<BoggleSquare>();
-        _selected = new ArrayList<BoggleSquare>();
+        _lastselected = new Stack<>();
+        _selected = new ArrayList<>();
 
-        for (int row = 0; row < _dim; row++)
-        {
-            for (int col = 0; col < _dim; col++)
-            {
+        for (int row = 0; row < _dim; row++) {
+            for (int col = 0; col < _dim; col++) {
                 _squares[row][col].unhighlight();
             }
         }
@@ -121,10 +115,8 @@ public class GameBoardVis
     *   Output:  nothing.
     */
 
-    public void clearLastSelectedLetter()
-    {
-        if ((_lastselected.empty() == false) && (_selected.isEmpty() == false) &&(_word.length() > 0))
-        {
+    void clearLastSelectedLetter() {
+        if ((!_lastselected.empty()) && (!_selected.isEmpty()) && (_word.length() > 0)) {
             BoggleSquare last = _lastselected.pop();
             last.unhighlight();
             _selected.remove(last);
@@ -142,16 +134,11 @@ public class GameBoardVis
     *   Output:  nothing.
     */
 
-    public void addCharToCurWord(BoggleSquare square)
-    {
-        if(_lastselected.empty() == true)
-        {
+    private void addCharToCurWord(BoggleSquare square) {
+        if (_lastselected.empty()) {
             this.addCharHelper(square);
-        }
-        else if ((_lastselected.peek() != square) && (!_selected.contains(square)))
-        {
-            if (square.getNeighbors().contains(_lastselected.peek()))
-            {
+        } else if ((_lastselected.peek() != square) && (!_selected.contains(square))) {
+            if (square.getNeighbors().contains(_lastselected.peek())) {
                 this.addCharHelper(square);
             }
         }
@@ -166,8 +153,7 @@ public class GameBoardVis
     *   Output:  nothing.
     */
 
-    public void gameOver()
-    {
+    void gameOver() {
         this.clearAllSelectedLetters();
         _letterlock = true;
     }
@@ -177,27 +163,22 @@ public class GameBoardVis
     *
     */
 
-    public void setWordListVis(WordListVis vis)
-    {
+    void setWordListVis(WordListVis vis) {
         _wordlistVis = vis;
     }
 
-    public String getSelectedWord()
-    {
-        if (_word.length() > 0)
-        {
+    String getSelectedWord() {
+        if (_word.length() > 0) {
             return _word.toString();
         }
         return null;
     }
 
-    public void setLetterLock(Boolean bool)
-    {
+    void setLetterLock(Boolean bool) {
         _letterlock = bool;
     }
 
-    public Boolean getLetterLock()
-    {
+    private Boolean getLetterLock() {
         return _letterlock;
     }
 
@@ -210,8 +191,7 @@ public class GameBoardVis
     *   Output:  nothing.
     */
 
-    private void addCharHelper(BoggleSquare square)
-    {
+    private void addCharHelper(BoggleSquare square) {
         _word.append(square.getChar());
         _selected.add(square);
         _lastselected.push(square);
@@ -226,15 +206,12 @@ public class GameBoardVis
     *   Output:  nothing.
     */
 
-    private void createGrid()
-    {
-        for (int i = 0; i < _dim; i++)
-        {
+    private void createGrid() {
+        for (int i = 0; i < _dim; i++) {
             _pane.getRowConstraints().add(new RowConstraints(80));
         }
 
-        for (int i = 0; i < _dim; i++)
-        {
+        for (int i = 0; i < _dim; i++) {
             _pane.getColumnConstraints().add(new ColumnConstraints(80));
         }
     }
@@ -247,16 +224,12 @@ public class GameBoardVis
     *   Output:  nothing.
     */
 
-    private void setNeighbors()
-    {
-        for (int row = 0; row < _dim; row++)
-        {
-            for (int col = 0; col < _dim; col++)
-            {
+    private void setNeighbors() {
+        for (int row = 0; row < _dim; row++) {
+            for (int col = 0; col < _dim; col++) {
                 Iterator<Vertex> iterator = _squares[row][col].getVertNeighbors();
 
-                while (iterator.hasNext())
-                {
+                while (iterator.hasNext()) {
                     Vertex cur = iterator.next();
                     _squares[row][col].setNeighbor(_squares[cur.getRow()][cur.getCol()]);
                 }
@@ -264,88 +237,80 @@ public class GameBoardVis
         }
     }
 
-    /**                                                BoggleSquare Class
-     *
-     *  The BoggleSquare is a smart object that knows the letter it represents, it's neighbors, and if it was
-     *  selected. If it was selected, a BoggleSquare will call the GameBoardVis' addCharToCurWord() method and pass
-     *  in itself. If a mouse is dragged across a BoggleSquare, the square will be selected and added to the current
-     *  word being displayed by the word label. The GameBoardVis controls this feature by only allowing a square to
-     *  be selected if it neighbors the last selected square.
+    /**
+     * BoggleSquare Class
+     * <p>
+     * The BoggleSquare is a smart object that knows the letter it represents, it's neighbors, and if it was
+     * selected. If it was selected, a BoggleSquare will call the GameBoardVis' addCharToCurWord() method and pass
+     * in itself. If a mouse is dragged across a BoggleSquare, the square will be selected and added to the current
+     * word being displayed by the word label. The GameBoardVis controls this feature by only allowing a square to
+     * be selected if it neighbors the last selected square.
      **/
 
-    private class BoggleSquare
-    {
-        private char _c;
-        private StackPane _pane;
-        private Rectangle _backgroud;
-        private Label _label;
-        private Vertex _vert;
-        private ArrayList<BoggleSquare> _neighbors;
+    private class BoggleSquare {
+        private final char _c;
+        private final StackPane _pane;
+        private final Rectangle _background;
+        private final Label _label;
+        private final Vertex _vert;
+        private final ArrayList<BoggleSquare> _neighbors;
 
-        public BoggleSquare(Vertex vert) {
+        BoggleSquare(Vertex vert) {
 
             _pane = new StackPane();
             _pane.getStyleClass().add("cell");
-            _backgroud = new Rectangle(70, 70, Color.WHITE);
+            _background = new Rectangle(70, 70, Color.WHITE);
+            _background.setStroke(Color.WHITE);
+            _background.setStrokeWidth(2.0);
+            _background.setStrokeLineJoin(StrokeLineJoin.ROUND);
             _label = new Label();
 
             _vert = vert;
-            _neighbors = new ArrayList<BoggleSquare>();
+            _neighbors = new ArrayList<>();
 
             _c = _vert.getChar();
             _label.setText(Character.toString(_c));
 
             this.setupEventHandler();
-            _pane.getChildren().addAll(_backgroud, _label);
+            _pane.getChildren().addAll(_background, _label);
         }
 
 
-        public void setNeighbor(BoggleSquare square)
-        {
+        void setNeighbor(BoggleSquare square) {
             _neighbors.add(square);
         }
 
-        public Iterator<Vertex> getVertNeighbors()
-        {
+        Iterator<Vertex> getVertNeighbors() {
             return _vert.getNeighbors().iterator();
         }
 
-        public ArrayList<BoggleSquare> getNeighbors()
-        {
+        ArrayList<BoggleSquare> getNeighbors() {
             return _neighbors;
         }
 
-        public char getChar()
-        {
+        char getChar() {
             return _c;
         }
 
-        public StackPane getPane()
-        {
+        StackPane getPane() {
             return _pane;
         }
 
-        public void highlight()
-        {
-            _backgroud.setFill(Color.LIGHTBLUE);
+        void highlight() {
+            _background.setFill(Color.LIGHTBLUE);
         }
 
-        public void unhighlight()
-        {
-            _backgroud.setFill(Color.WHITE);
+        void unhighlight() {
+            _background.setFill(Color.WHITE);
         }
 
-        private void setupEventHandler()
-        {
-            _backgroud.setOnMouseDragEntered(new OnDrag());
+        private void setupEventHandler() {
+            _background.setOnMouseDragEntered(new OnDrag());
         }
 
-        private class OnDrag implements EventHandler<MouseEvent>
-        {
-            public void handle(MouseEvent event)
-            {
-                if (GameBoardVis.this.getLetterLock() == false)
-                {
+        private class OnDrag implements EventHandler<MouseEvent> {
+            public void handle(MouseEvent event) {
+                if (!GameBoardVis.this.getLetterLock()) {
                     GameBoardVis.this.addCharToCurWord(BoggleSquare.this);
                 }
             }
