@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ArtifactManager">
-    <artifact type="jar" name="Boggle_Baackmann_Friedlaender">
-      <output-path>$PROJECT_DIR$/out/artifacts/Boggle_Baackmann_Friedlaender</output-path>
-      <root id="archive" name="Boggle_Baackmann_Friedlaender.jar">
+    <artifact type="jar" name="Boggle:jar">
+      <output-path>$PROJECT_DIR$/out/artifacts/Boggle_jar</output-path>
+      <root id="archive" name="Boggle.jar">
         <element id="module-output" name="Boggle" />
-        <element id="dir-copy" path="$PROJECT_DIR$/src" />
       </root>
     </artifact>
   </component>

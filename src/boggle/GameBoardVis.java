@@ -305,7 +305,9 @@ class GameBoardVis {
         }
 
         private void setupEventHandler() {
+
             _background.setOnMouseDragEntered(new OnDrag());
+            _background.setOnMouseClicked(new OnDrag());
         }
 
         private class OnDrag implements EventHandler<MouseEvent> {
