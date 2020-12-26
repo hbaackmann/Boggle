@@ -53,16 +53,7 @@ public class Vertex
 
 
     public ArrayList<Vertex> getNeighbors()
-    {
-        ArrayList<Vertex> neighbors = new ArrayList<Vertex>();
-        Iterator<Vertex> iterator = _neighbors.iterator();
-
-        while (iterator.hasNext())
-        {
-            neighbors.add(iterator.next());
-        }
-
-       return neighbors;
+    { return _neighbors;
     }
 
 

@@ -27,11 +27,11 @@ public class GameBoard
     *  Output: nothing.
     **/
 
-    public GameBoard(int dimention, GridPane pane)
+    public GameBoard(int dimension, GridPane pane)
     {
-        _dim = dimention;
+        _dim = dimension;
         _vertices = new Vertex[_dim][_dim];
-        _dice = new Dice(dimention);
+        _dice = new Dice(dimension);
 
         //Create Data
         this.createVertices();
@@ -104,7 +104,7 @@ public class GameBoard
     *  array that holds the frequency that each letter appears on the GameBoard. This is later used to ensure no
     *  letter appears more than four times.
     *
-    *  Input:  nothing.
+    *  Input:  Vertex
     *  Output: letterFrequencies - the an array, with each index corresponding to a lowercase letter's position
     *          in the alphabet. When a letter is used, the int value held at the letter's position in the array will be
     *          increased by one.

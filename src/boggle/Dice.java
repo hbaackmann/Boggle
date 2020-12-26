@@ -14,9 +14,8 @@ import java.util.Iterator;
  **/
 
 public class Dice {
-    
-    private DiceCreator _diceCreator;
-    private ArrayList<String> _letters;
+
+    private ArrayList<Die> _dice;
     private Die _curDie;
 
     /*
@@ -28,8 +27,15 @@ public class Dice {
 
     public Dice(int dimension)
     {
-        _diceCreator = new DiceCreator(dimension);
-        _letters = _diceCreator.getLetters();
+        // Generate correct number of dice based on the size of the board
+        if(dimension == 4)
+        {
+            _dice = this.createBogDice();
+        }
+        else
+        {
+            _dice = this.createBigBogDice();
+        }
     }
 
     /*
@@ -41,7 +47,7 @@ public class Dice {
 
     public Boolean hasNextDie()
     {
-        return _letters.size() >= 1;
+        return _dice.size() >= 1;
     }
 
     /*
@@ -54,9 +60,8 @@ public class Dice {
 
     public void setNextDie()
     {
-        int index = (int) (Math.random() * _letters.size());
-        Die die = new Die(_letters.remove(index));
-        _curDie = die;
+        int index = (int) (Math.random() * _dice.size());
+        _curDie = _dice.remove(index);
     }
 
     /*
@@ -70,6 +75,62 @@ public class Dice {
     public char rollCurDie()
     {
         return _curDie.roll();
+    }
+
+    /*  Boggle Board Letter Distribution:
+    *
+    *  Each group of six letters represents the letters that will appear on a single die.
+    * */
+    private ArrayList<Die> createBogDice()
+    {
+        ArrayList<Die> dice = new ArrayList<Die>();
+        dice.add(new Die("aaeegn"));
+        dice.add(new Die("abbjoo"));
+        dice.add(new Die("achops"));
+        dice.add(new Die("affkps"));
+        dice.add(new Die("aoqttw"));
+        dice.add(new Die("cimotu"));
+        dice.add(new Die("deilrx"));
+        dice.add(new Die("delrvy"));
+        dice.add(new Die("distty"));
+        dice.add(new Die("eeghnw"));
+        dice.add(new Die("eeinsu"));
+        dice.add(new Die("ehrtvw"));
+        dice.add(new Die("eiosst"));
+        dice.add(new Die("elrtty"));
+        dice.add(new Die("himnuq"));
+        dice.add(new Die("hlnnrz"));
+        return dice;
+    }
+
+    private ArrayList<Die> createBigBogDice() {
+        ArrayList<Die> dice = new ArrayList<Die>();
+        dice.add(new Die("aaafrs"));
+        dice.add(new Die("aaeeee"));
+        dice.add(new Die("aafirs"));
+        dice.add(new Die("adennn"));
+        dice.add(new Die("aeeeem"));
+        dice.add(new Die("aeegmu"));
+        dice.add(new Die("aegmnn"));
+        dice.add(new Die("afirsy"));
+        dice.add(new Die("bbjkxz"));
+        dice.add(new Die("ccenst"));
+        dice.add(new Die("eiilst"));
+        dice.add(new Die("ceiqst"));
+        dice.add(new Die("ddhnot"));
+        dice.add(new Die("dhhlor"));
+        dice.add(new Die("dhhnow"));
+        dice.add(new Die("dhlrnor"));
+        dice.add(new Die("eiiitt"));
+        dice.add(new Die("eilpst"));
+        dice.add(new Die("emotqt"));
+        dice.add(new Die("ensssu"));
+        dice.add(new Die("fiprsy"));
+        dice.add(new Die("gorrvw"));
+        dice.add(new Die("iprsyy"));
+        dice.add(new Die("nootuw"));
+        dice.add(new Die("ooottu"));
+        return dice;
     }
 
     /**                                                 Die Class
@@ -93,103 +154,6 @@ public class Dice {
             int index = (int) (Math.random() * 6);
             char c = _letters[index];
             return c;
-        }
-    }
-
-    /**                                                 DiceCreator Class
-     *
-     *   The DiceCreator class initializes and instantiates an immutable ArrayList<String> holding the letter distributions for
-     *   dice. Upon request by the Dice class, it makes a mutable copy saved to the _copy variable and returns it.
-     **/
-
-    private class DiceCreator
-    {
-        private ArrayList<String> _letters;
-        private ArrayList<String> _copy;
-        
-        public DiceCreator(int dimension)
-        {
-            //Initialize ArrayList holding the letters distributions for the letters boards (and a copy).
-            _letters = new ArrayList<String>();
-            _copy = new ArrayList<String>();
-
-            //Add letters distributions.
-            if(dimension == 4)
-            {
-                this.createBogLetters();
-            }
-            else
-            {
-                this.createBigBogLetters();
-            }
-
-            //Make OG letters immutable, while copy will be mutable.
-            Collections.unmodifiableList(_letters);
-        }
-
-        public ArrayList<String> getLetters()
-        {
-            this.createCopy();
-            return _copy;
-        }
-
-        private void createCopy()
-        {
-            Iterator<String> iterator = _letters.iterator();
-
-            while(iterator.hasNext())
-            {
-                _copy.add(iterator.next());
-            }
-        }
-
-        /* Boogle Board Letter Distribution */
-        private void createBogLetters()
-        {
-            _letters.add("aaeegn");
-            _letters.add("abbjoo");
-            _letters.add("achops");
-            _letters.add("affkps");
-            _letters.add("aoqttw");
-            _letters.add("cimotu");
-            _letters.add("deilrx");
-            _letters.add("delrvy");
-            _letters.add("distty");
-            _letters.add("eeghnw");
-            _letters.add("eeinsu");
-            _letters.add("ehrtvw");
-            _letters.add("eiosst");
-            _letters.add("elrtty");
-            _letters.add("himnuq");
-            _letters.add("hlnnrz");
-        }
-
-        private void createBigBogLetters() {
-            _letters.add("aaafrs");
-            _letters.add("aaeeee");
-            _letters.add("aafirs");
-            _letters.add("adennn");
-            _letters.add("aeeeem");
-            _letters.add("aeegmu");
-            _letters.add("aegmnn");
-            _letters.add("afirsy");
-            _letters.add("bbjkxz");
-            _letters.add("ccenst");
-            _letters.add("eiilst");
-            _letters.add("ceiqst");
-            _letters.add("ddhnot");
-            _letters.add("dhhlor");
-            _letters.add("dhhnow");
-            _letters.add("dhlrnor");
-            _letters.add("eiiitt");
-            _letters.add("eilpst");
-            _letters.add("emotqt");
-            _letters.add("ensssu");
-            _letters.add("fiprsy");
-            _letters.add("gorrvw");
-            _letters.add("iprsyy");
-            _letters.add("nootuw");
-            _letters.add("ooottu");
         }
     }
 

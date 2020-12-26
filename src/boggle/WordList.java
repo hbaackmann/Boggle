@@ -48,7 +48,7 @@ public class WordList {
     /*
     *       The searchBoard() method is used when a word is entered into the TextField of the WordListVis. This method
     *  takes in the word that was inputted into the TextField, then it finds letters on the board that match the first
-    *  letter of the inputted word and calls the DictTrie's checkValidWorldTyped() method to dynamically searches the
+    *  letter of the inputted word and calls the DictTrie's checkValidWorldTyped() method to dynamically search the
     *  board and the dictionary at the same time from there until the word is found. If the word was found, this method
     *  returns true (otherwise, it returns false).
     *
