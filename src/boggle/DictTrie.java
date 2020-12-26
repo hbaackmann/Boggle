@@ -1,5 +1,6 @@
 package boggle;
 
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -17,6 +18,7 @@ import java.util.Iterator;
 class DictTrie {
     private final Node _root;
     private final CheckValidWord _wordChecker = new CheckValidWord();
+    private HashMap<Character,Integer> _childLocations;
 
      /*
     *       The DictTrie() constructor initializes the root node and sets its text value to a null string.
@@ -27,11 +29,17 @@ class DictTrie {
 
     DictTrie() {
         _root = new Node();
+        _childLocations = new HashMap<>();
+        // map characters to integers to maintain locations of children
+        char[] alphabet = Constants.LC_ALPHABET.toCharArray();
+        for (int i = 0; i < 26; i++){
+            _childLocations.put(alphabet[i], i);
+        }
     }
 
      /*
     *       The getIndex() method returns the index of the inputted char in the lowercase alphabet (each char
-    *   corresponds to a unique index). It is used to consistently index find the correct node when indexing into
+    *   corresponds to a unique index). It is used to consistently find the correct node when indexing into
     *   a node's children.
     *
     *   Input:   c - the char to find the index of.
@@ -40,10 +48,7 @@ class DictTrie {
     */
 
     private int getIndex(char c) {
-        if (Constants.LC_ALPHABET.indexOf(c) == -1) {
-            System.out.println("Error: " + c + " is not a lowercase letter.");
-        }
-        return Constants.LC_ALPHABET.indexOf(c);
+        return _childLocations.get(c);
     }
 
      /*

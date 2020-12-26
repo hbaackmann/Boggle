@@ -110,10 +110,10 @@ class PaneOrganizer {
         topPane.setPrefSize(Constants.TOP_PANE_WIDTH, Constants.TOP_PANE_HEIGHT);
 
         topPane.getColumnConstraints().add(new ColumnConstraints(120));
-        topPane.getColumnConstraints().add(new ColumnConstraints(340));
-        topPane.getColumnConstraints().add(new ColumnConstraints(60));
-        topPane.getColumnConstraints().add(new ColumnConstraints(100));
+        topPane.getColumnConstraints().add(new ColumnConstraints(300));
+        topPane.getColumnConstraints().add(new ColumnConstraints(65));
         topPane.getColumnConstraints().add(new ColumnConstraints(110));
+        topPane.getColumnConstraints().add(new ColumnConstraints(120));
 
 
         Text title = new Text("Boggle!");

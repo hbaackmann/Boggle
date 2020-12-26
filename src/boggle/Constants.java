@@ -35,9 +35,9 @@ class Constants {
             + "-fx-border-color: white;\n"
             + "-fx-border-width: 2;\n"
             + "-fx-text-fill: white;\n"
-            + "-fx-font-weight: black;\n"
+            + "-fx-font-weight: bolder;\n"
             + "-fx-font-family: Century Gothic;\n"
-            + "-fx-font-size: 12px;\n"
+            + "-fx-font-size: 14px;\n"
             + "-fx-background-radius: 3;\n";
 
     static final String GAME_BUTTONS_CSS = "-fx-background-color: grey;\n"
@@ -46,17 +46,18 @@ class Constants {
             + "-fx-border-color: white;\n"
             + "-fx-border-width: 2;\n"
             + "-fx-text-fill: white;\n"
-            + "-fx-font-weight: black;\n"
+            + "-fx-font-weight: bolder;\n"
             + "-fx-font-family: Century Gothic;\n"
-            + "-fx-font-size: 12px;\n"
+            + "-fx-font-size: 14px;\n"
             + "-fx-border-radius: 3;\n";
 
     static final String GAME_INFO_CSS = "-fx-background-color: white;\n"
             + "-fx-border-color: white;\n"
             + "-fx-border-width: 3;\n"
             + "-fx-text-fill: dimgrey;\n"
-            + "-fx-font: 16px Century Gothic;\n"
-            + "-fx-font-weight: 900;\n"
+            + "-fx-font-family: Century Gothic;\n"
+            + "-fx-font-size: 16px;\n"
+            + "-fx-font-weight: bolder;\n"
             + "-fx-background-radius: 3;\n"
             + "-fx-border-radius: 3;\n";
 
@@ -68,12 +69,12 @@ class Constants {
 
     static final String VALID_WORD_CSS = "-fx-background-color: lightblue;\n"
             + "-fx-text-fill: white;\n"
-            + "-fx-font-weight: 900;\n"
+            + "-fx-font-weight: bolder;\n"
             + "-fx-font: 16px Helvetica;\n";
 
     static final String INVALID_WORD_CSS = "-fx-background-color: lightblue;\n"
             + "-fx-text-fill: red;\n"
-            + "-fx-font-weight: bold;\n"
+            + "-fx-font-weight: bolder;\n"
             + "-fx-font: 16px Helvetica;\n";
 
 

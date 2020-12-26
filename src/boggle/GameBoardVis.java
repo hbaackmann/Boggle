@@ -21,15 +21,14 @@ import java.util.Stack;
  * An instance of the GameBoardVis class is instantiated by the GameBoard class to display the letters on the
  * GameBoard. Because the GameBoard is interactive, the GameBoardVis class contains a private inner class called
  * BoggleSquare that represents a smart object that knows the letter it represents, it's neighbors, and if it was
- * selected. If it was selected, a BoggleSquare will highlight itself add itself to the _lastselected and
- * _selected variables. The _selected variable ensures a square is only selected once during the creation of a
- * string, and can therefore only be appended to the current _word once. The _lastselected variable allows the
- * GameBoardVis to achieve the 'Delete' button's functionality. It allows the user to un-select the BoggleSquare
- * that was most recently selected, and delete it from the current word until no selected letters remain in the
- * Stack. The GameBoardVis Class communicates with the WordListVis class (there is a two way reference), so that
- * the WordListVis' listeners for the Delete, Clear, and Submit buttons can call the the GameBoardVis and the
- * GameBoardVis can call the WordListVis to update the word label indicating which letters were selected
- * (in order).
+ * selected. If it was selected, a BoggleSquare will highlight itself add itself to the _selected variable. The _selected 
+ * variable ensures a square is only selected once during the creation of a string, and can therefore only be appended 
+ * to the current _word once. The _selected variable also allows the GameBoardVis to achieve the 'Delete' button's 
+ * functionality. It allows the user to un-select the BoggleSquare that was most recently selected, and delete it from 
+ * the current word until no selected letters remain in the Stack. The GameBoardVis Class communicates with the 
+ * WordListVis class (there is a two way reference), so that the WordListVis' listeners for the Delete, Clear, and 
+ * Submit buttons can call the the GameBoardVis and the GameBoardVis can call the WordListVis to update the word label 
+ * indicating which letters were selected (in order).
  **/
 
 class GameBoardVis {
@@ -38,8 +37,7 @@ class GameBoardVis {
     private final int _dim;
     private StringBuilder _word;
     private Boolean _letterlock;
-    private Stack<BoggleSquare> _lastselected;
-    private ArrayList<BoggleSquare> _selected;
+    private Stack<BoggleSquare> _selected;
     private WordListVis _wordlistVis;
 
      /*
@@ -59,8 +57,7 @@ class GameBoardVis {
         _word = new StringBuilder();
 
         _letterlock = false;
-        _lastselected = new Stack<>();
-        _selected = new ArrayList<>();
+        _selected = new Stack<>();
 
         this.createGrid();
     }
@@ -86,29 +83,26 @@ class GameBoardVis {
 
     /*
     *       The clearAllLetters() method deselects all currently selected setters by un-highlighting, resetting
-    *  the _word, _lastselected, and _selected variables, and updating the word label.
+    *  the _word, and _selected variables, and updating the word label.
     *
     *   Input: nothing.
     *   Output:  nothing.
     */
 
     void clearAllSelectedLetters() {
-        _word = new StringBuilder();
-        _lastselected = new Stack<>();
-        _selected = new ArrayList<>();
 
-        for (int row = 0; row < _dim; row++) {
-            for (int col = 0; col < _dim; col++) {
-                _squares[row][col].unhighlight();
-            }
+        while (_selected.size() > 0){
+            _selected.pop().unhighlight();
         }
+        assert _selected.size() == 0;
+        _word = new StringBuilder();
         _wordlistVis.updateWordLabel("");
     }
 
     /*
     *       The clearLastSelectedLetter() method deselects the most recently selected BoggleSquare by un-highlighting
-    *   it, resetting the _word, _lastselected, and _selected variables, and updating the word label. Since the
-    *   BoggleSquares are added to the _lastselected Stack upon being added, the user can continuously clear the last
+    *   it, resetting the _word, and _selected variables, and updating the word label. Since the
+    *   BoggleSquares are added to the _selected Stack upon being added, the user can continuously clear the last
     *   select BoggleSquare by popping from the Stack until there are no squares selected.
     *
     *   Input: nothing.
@@ -116,10 +110,9 @@ class GameBoardVis {
     */
 
     void clearLastSelectedLetter() {
-        if ((!_lastselected.empty()) && (!_selected.isEmpty()) && (_word.length() > 0)) {
-            BoggleSquare last = _lastselected.pop();
+        if (!_selected.empty() && _word.length() > 0) {
+            BoggleSquare last = _selected.pop();
             last.unhighlight();
-            _selected.remove(last);
             _word.deleteCharAt(_word.length() - 1);
             _word.trimToSize();
             _wordlistVis.updateWordLabel(_word.toString());
@@ -135,10 +128,10 @@ class GameBoardVis {
     */
 
     private void addCharToCurWord(BoggleSquare square) {
-        if (_lastselected.empty()) {
+        if (_selected.empty()) {
             this.addCharHelper(square);
-        } else if ((_lastselected.peek() != square) && (!_selected.contains(square))) {
-            if (square.getNeighbors().contains(_lastselected.peek())) {
+        } else if (_selected.search(square) == -1) {
+            if (square.getNeighbors().contains(_selected.peek())) {
                 this.addCharHelper(square);
             }
         }
@@ -183,7 +176,7 @@ class GameBoardVis {
     }
 
     /*
-    *       The addCharHelper() updates the _word, _selected, and _lastselected variables to keep track of when a
+    *       The addCharHelper() updates the _word and _selected variables to keep track of when a
     *   BoggleSquare has been selected. It also highlights the inputted square and updates the word label display
     *   the word currently selected on the GameBoard.
     *
@@ -193,8 +186,7 @@ class GameBoardVis {
 
     private void addCharHelper(BoggleSquare square) {
         _word.append(square.getChar());
-        _selected.add(square);
-        _lastselected.push(square);
+        _selected.push(square);
         square.highlight();
         _wordlistVis.updateWordLabel(_word.toString());
     }
@@ -304,11 +296,7 @@ class GameBoardVis {
             _background.setFill(Color.WHITE);
         }
 
-        private void setupEventHandler() {
-
-            _background.setOnMouseDragEntered(new OnDrag());
-            _background.setOnMouseClicked(new OnDrag());
-        }
+        private void setupEventHandler() { _background.setOnMouseDragEntered(new OnDrag());}
 
         private class OnDrag implements EventHandler<MouseEvent> {
             public void handle(MouseEvent event) {
